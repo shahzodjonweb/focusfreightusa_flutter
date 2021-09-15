@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "976436395184",
+    "project_id": "focusfreightusa-6d47c",
+    "storage_bucket": "focusfreightusa-6d47c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976436395184:android:d921368392d0dac5a0cf75",
+        "android_client_info": {
+          "package_name": "com.example.focusfreightusa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976436395184-3erdi9oac4h2cadlh1m48cebcqamg2bd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsTepAHR_kHEgN1ujYHQwbCyhSUU_JZSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976436395184-3erdi9oac4h2cadlh1m48cebcqamg2bd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
