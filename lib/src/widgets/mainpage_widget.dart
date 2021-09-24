@@ -43,7 +43,8 @@ class _MainPageState extends State<MainPage> {
               itemBuilder: (context, int index) {
                 return shipperInfo(
                     shippers[index].time,
-                    shippers[index].location,
+                    shippers[index].city,
+                    shippers[index].street,
                     shippers[index].checkin,
                     shippers[index].checkout,
                     (shippers.length - 1),
@@ -263,7 +264,7 @@ class _MainPageState extends State<MainPage> {
         ]));
   }
 
-  Widget shipperInfo(var time, Location location, var checkin, var checkout,
+  Widget shipperInfo(var time, var city, var street, var checkin, var checkout,
       var last, var index, context, shipper, loadid) {
     return Container(
         width: double.infinity,
@@ -298,11 +299,22 @@ class _MainPageState extends State<MainPage> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
-              child: Text(
-                '${location.city} ${location.county} , ${location.state} ${location.zipcode}',
-                style: TextStyle(
-                  fontSize: 17.0,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    street,
+                    style: TextStyle(
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  Text(
+                    city,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(

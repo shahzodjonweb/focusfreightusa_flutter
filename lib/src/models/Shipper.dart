@@ -1,27 +1,29 @@
-import '../models/Location.dart';
 class Shipper {
   var order;
   var checkin;
   var checkout;
   var time;
-  Location location;
+  var city;
+  var street;
+  Shipper(this.order, this.checkin, this.checkout, this.time, this.city,
+      this.street);
 
-  Shipper(this.order, this.checkin , this.checkout , this.time , this.location);
-  
-  Shipper.fromJson(Map<String, dynamic> parsedJson){
+  Shipper.fromJson(Map<String, dynamic> parsedJson) {
     order = parsedJson['order'];
-    if(parsedJson['in'] == 0 || parsedJson['in'] == 1){
+    if (parsedJson['in'] == 0 || parsedJson['in'] == 1) {
       checkin = null;
-    }else{
+    } else {
       checkin = parsedJson['in'];
     }
-    if(parsedJson['out'] == 0 || parsedJson['out'] == 1){
+    if (parsedJson['out'] == 0 || parsedJson['out'] == 1) {
       checkout = null;
-    }else{
+    } else {
       checkout = parsedJson['out'];
     }
-    
+
     time = parsedJson['time'];
-   location = Location.fromJson(parsedJson['location']);
+    city = parsedJson['city'];
+    street = parsedJson['street'];
+    //location = Location.fromJson(parsedJson['location']);
   }
 }
