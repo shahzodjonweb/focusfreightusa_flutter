@@ -27,10 +27,9 @@ dependencies:
     sdk: flutter
   sqflite:
   path:
-  http: 0.12.0
-  geolocator: ^6.1.1
+  http: ^0.13.3
+  geolocator: ^7.6.2
   #geolocator: ^6.1.1
-  flutter_background_geolocation: '^1.9.0'
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -39,14 +38,15 @@ dependencies:
   hive_flutter: ^0.3.0+2
   rflutter_alert: ^2.0.2
   connectivity: ^0.4.2
-  image_picker: ^0.6.6+1
+  image_picker: ^0.8.4+2
   # firebase_core: ^0.7.0
   # cloud_firestore: "^0.16.0+1"
   # firebase_auth: "^0.20.1"
   # firebase_messaging: ^5.0.2
   # flutter_local_notifications: ^1.4.4+1
   workmanager: ^0.2.3
-  
+  location: ^4.3.0
+  cron: ^0.3.2
 
 dev_dependencies:
   flutter_test:

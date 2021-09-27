@@ -63,7 +63,7 @@ class LoadInfoState extends State<LoadInfo> {
     var box = await Hive.openBox('UserInfo');
     api_key = box.get('key');
     String token = api_key;
-    final result = await post('http://sbuy.uz/api/load/get_load',
+    final result = await post(Uri.parse('http://sbuy.uz/api/load/get_load'),
         body: json.encode({'loadid': widget.id}),
         headers: {
           'Content-Type': 'application/json',
@@ -474,7 +474,8 @@ class LoadInfoState extends State<LoadInfo> {
 
   void sendRequest(context, loadid, status) async {
     var token = api_key;
-    final result = await post('http://sbuy.uz/api/load/change_status',
+    final result = await post(
+        Uri.parse('http://sbuy.uz/api/load/change_status'),
         body: json.encode({'loadid': loadid, 'status': status}),
         headers: {
           'Content-Type': 'application/json',

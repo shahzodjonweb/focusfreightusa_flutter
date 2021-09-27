@@ -1,3 +1,88 @@
+// import 'package:flutter/material.dart';
+// import 'package:location/location.dart';
+// import 'dart:async';
+
+// void main() => runApp(MyLocation());
+
+// class MyLocation extends StatefulWidget {
+//   @override
+//   _MyLocationState createState() => _MyLocationState();
+// }
+
+// class _MyLocationState extends State<MyLocation> {
+//   LocationData _currentPosition;
+//   double latitude_loc = 0;
+//   double longitude_loc = 0;
+//   Location location = Location();
+
+//   @override
+//   void initState() {
+//     Timer timer = Timer.periodic(Duration(seconds: 10), (timer) {
+//       DateTime timenow = DateTime.now(); //get current date and time
+
+//       setState(() {
+//         checkpermission();
+//       });
+//       //mytimer.cancel() //to terminate this timer
+//     });
+//     // TODO: implement initState
+//     super.initState();
+//     getLoc();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text("Active Load"),
+//           backgroundColor: Color(0xFF003366),
+//         ),
+//         body: SingleChildScrollView(
+//           child: Text('${latitude_loc}  :  ${longitude_loc}'),
+//         ),
+//       ),
+//     );
+//   }
+
+//   checkpermission() async {
+//     bool _serviceEnabled;
+//     PermissionStatus _permissionGranted;
+
+//     _serviceEnabled = await location.serviceEnabled();
+//     if (!_serviceEnabled) {
+//       _serviceEnabled = await location.requestService();
+//       if (!_serviceEnabled) {
+//         return;
+//       }
+//     }
+
+//     _permissionGranted = await location.hasPermission();
+//     if (_permissionGranted == PermissionStatus.denied) {
+//       _permissionGranted = await location.requestPermission();
+//       if (_permissionGranted != PermissionStatus.granted) {
+//         return;
+//       }
+//     }
+//   }
+
+//   getLoc() async {
+//     await checkpermission();
+//     location.changeSettings( accuracy: LocationAccuracy.high, interval: 15000, distanceFilter: 0);
+//     _currentPosition = await location.getLocation();
+//     location.enableBackgroundMode(enable: true);
+//     location.onLocationChanged.listen((LocationData currentLocation) {
+//       print("${currentLocation.longitude} : ${currentLocation.longitude}");
+
+//       latitude_loc = currentLocation.longitude;
+//       longitude_loc = currentLocation.longitude;
+
+//       setState(() {});
+//     });
+//   }
+// }
+
 import 'package:flutter/material.dart';
 import 'src/app.dart';
 
@@ -8,14 +93,14 @@ void main() => runApp(App());
 // import 'package:workmanager/workmanager.dart';
 
 // void main() {
-	
+
 // // needed if you intend to initialize in the `main` function
 // WidgetsFlutterBinding.ensureInitialized();
 // Workmanager.initialize(
-	
+
 // 	// The top level function, aka callbackDispatcher
 // 	callbackDispatcher,
-	
+
 // 	// If enabled it will post a notification whenever
 // 	// the task is running. Handy for debugging tasks
 // 	isInDebugMode: true
@@ -23,11 +108,11 @@ void main() => runApp(App());
 // // Periodic task registration
 // Workmanager.registerPeriodicTask(
 // 	"2",
-	
+
 // 	//This is the value that will be
 // 	// returned in the callbackDispatcher
 // 	"simplePeriodicTask",
-	
+
 // 	// When no frequency is provided
 // 	// the default 15 minutes is set.
 // 	// Minimum frequency is 15 min.
@@ -41,15 +126,15 @@ void main() => runApp(App());
 
 // void callbackDispatcher() {
 // Workmanager.executeTask((task, inputData) {
-	
+
 // 	// initialise the plugin of flutterlocalnotifications.
 // 	FlutterLocalNotificationsPlugin flip = new FlutterLocalNotificationsPlugin();
-	
+
 // 	// app_icon needs to be a added as a drawable
 // 	// resource to the Android head project.
 // 	var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
 // 	var IOS = new IOSInitializationSettings();
-	
+
 // 	// initialise settings for both Android and iOS device.
 // 	var settings = new InitializationSettings(android, IOS);
 // 	flip.initialize(settings);
@@ -59,7 +144,7 @@ void main() => runApp(App());
 // }
 
 // Future _showNotificationWithDefaultSound(flip) async {
-	
+
 // // Show a notification after every 15 minute with the first
 // // appearance happening a minute after invoking the method
 // var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
@@ -70,7 +155,7 @@ void main() => runApp(App());
 // 	priority: Priority.High
 // );
 // var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-	
+
 // // initialise channel platform for both Android and iOS device.
 // var platformChannelSpecifics = new NotificationDetails(
 // 	androidPlatformChannelSpecifics,
@@ -89,7 +174,7 @@ void main() => runApp(App());
 // 	return MaterialApp(
 // 	title: 'Geeks Demo',
 // 	theme: ThemeData(
-		
+
 // 		// This is the theme
 // 		// of your application.
 // 		primarySwatch: Colors.green,
@@ -124,7 +209,7 @@ void main() => runApp(App());
 // class _HomePageState extends State<HomePage> {
 // @override
 // Widget build(BuildContext context) {
-	
+
 // 	// This method is rerun every time setState is called.
 // 	// The Flutter framework has been optimized
 // 	// to make rerunning build methods
@@ -134,7 +219,7 @@ void main() => runApp(App());
 // 	//instances of widgets.
 // 	return Scaffold(
 // 	appBar: AppBar(
-		
+
 // 		// Here we take the value from
 // 		// the MyHomePage object that was created by
 // 		// the App.build method, and use it

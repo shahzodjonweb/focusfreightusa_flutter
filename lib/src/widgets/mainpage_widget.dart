@@ -370,7 +370,7 @@ class _MainPageState extends State<MainPage> {
     var box = await Hive.openBox('UserInfo');
     api_key = box.get('key');
     String token = api_key;
-    final result = await get('http://sbuy.uz/api/load/get_active',
+    final result = await get(Uri.parse('http://sbuy.uz/api/load/get_active'),
         // body: json.encode({'loadid': 488}),
         headers: {
           'Content-Type': 'application/json',
@@ -694,7 +694,7 @@ class _MainPageState extends State<MainPage> {
     var position = await _determinePosition();
     var token = api_key;
     final dateTime = DateTime.now();
-    final result = await post('http://sbuy.uz/api/load/get_location',
+    final result = await post(Uri.parse('http://sbuy.uz/api/load/get_location'),
         body: json.encode({
           'loadid': loadid,
           'stop': shipper,
@@ -725,7 +725,7 @@ class _MainPageState extends State<MainPage> {
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
     if (json.decode(result.body) != null) {
-      if (shippers.last.order == shipper) {
+      if (shippers.last.order == shipper && shippers.last.checkin != null) {
         sendRequestStatus(context, loadid, 'finished');
         await Hive.initFlutter();
         var box = await Hive.openBox('UserInfo');
@@ -768,7 +768,8 @@ class _MainPageState extends State<MainPage> {
       }
     }
     var token = api_key;
-    final result = await post('http://sbuy.uz/api/load/change_status',
+    final result = await post(
+        Uri.parse('http://sbuy.uz/api/load/change_status'),
         body: json.encode({'loadid': loadid, 'status': status}),
         headers: {
           'Content-Type': 'application/json',

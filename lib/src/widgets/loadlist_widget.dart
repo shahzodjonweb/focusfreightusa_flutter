@@ -187,7 +187,7 @@ class LoadListState extends State<LoadList> {
     var box = await Hive.openBox('UserInfo');
     var api_key = box.get('key');
     String token = api_key;
-    final result = await post('http://sbuy.uz/api/load/loadlist',
+    final result = await post(Uri.parse('http://sbuy.uz/api/load/loadlist'),
         body: json.encode({'page': page}),
         headers: {
           'Content-Type': 'application/json',

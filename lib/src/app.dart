@@ -10,13 +10,14 @@ import 'screens/myaccount_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/report_screen.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:location/location.dart';
+import 'dart:async';
 
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
@@ -29,117 +30,68 @@ class _AppState extends State<App> {
   var isActive;
   var api_key;
   var loadid;
-  
-  void getstatus()async{
-  
-  }
+  LocationData _currentPosition;
+  Location location = Location();
+
+  void getstatus() async {}
   @override
-void initState() {
+  void initState() {
+    Timer timer = Timer.periodic(Duration(seconds: 60), (timer) {
+      DateTime timenow = DateTime.now(); //get current date and time
+      checkpermission();
+
+      //mytimer.cancel() //to terminate this timer
+    });
+    // TODO: implement initState
     super.initState();
-
-    ////
-    // 1.  Listen to events (See docs for all 12 available events).
-    //
-
-    // Fired whenever a location is recorded
-    bg.BackgroundGeolocation.onLocation((bg.Location location) {
-     sendRequest(context,loadid);
-     
-    });
-
-    // Fired whenever the plugin changes motion-state (stationary->moving and vice-versa)
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
-      // print('[motionchange] - $location');
-    });
-
-    // Fired whenever the state of location-services changes.  Always fired at boot
-    bg.BackgroundGeolocation.onProviderChange((bg.ProviderChangeEvent event) {
-      // print('[providerchange] - $event');
-    });
-
-    ////
-    // 2.  Configure the plugin
-    //
-    bg.BackgroundGeolocation.ready(bg.Config(
-        desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        distanceFilter: 10.0,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        stationaryRadius: 500,
-        locationUpdateInterval: 60000,
-        debug: true,
-        logLevel: bg.Config.LOG_LEVEL_VERBOSE
-    )).then((bg.State state)async{
-      
-          await Hive.initFlutter();
-          
-    var box = await Hive.openBox('UserInfo');
-    api_key = box.get('key');
-     isActive = box.get('isActive');
-     loadid = box.get('idload');
-     print(isActive);
-     if(isActive){
-       if (!state.enabled) {
-     bg.BackgroundGeolocation.start();}
-     }else{
-       bg.BackgroundGeolocation.stop();
-     }
-      // getstatus();
-        ///
-        // 3.  Start the plugin.
-        //
-        
-      
-    });
+    getLoc();
   }
 
-    void sendRequest(context,loadid) async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-        if (connectivityResult != ConnectivityResult.mobile) {
-          if (connectivityResult != ConnectivityResult.wifi) {
-           print('notconnected');
-    Alert(
-      context: context,
-      type: AlertType.error,
-      title: "Network unavailable!",
-      style: AlertStyle(
-        isOverlayTapDismiss: false,
-        isCloseButton: false,
-      ),
-      buttons: [
-        DialogButton(
-          child: Text(
-            "Try Again",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+  void sendRequest(context, loadid, lat, lon) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.mobile) {
+      if (connectivityResult != ConnectivityResult.wifi) {
+        print('notconnected');
+        Alert(
+          context: context,
+          type: AlertType.error,
+          title: "Network unavailable!",
+          style: AlertStyle(
+            isOverlayTapDismiss: false,
+            isCloseButton: false,
           ),
-           onPressed: ()  {
-           Navigator.pop(context);
-            setState(() {
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Try Again",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {});
+              },
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+              radius: BorderRadius.circular(0.0),
+            ),
+          ],
+        ).show();
+      }
+    }
 
-            });
-          },
-          color: Color.fromRGBO(0, 179, 134, 1.0),
-          radius: BorderRadius.circular(0.0),
-        ),
-      ],
-    ).show();
-        }
-        }  
- var position = await _determinePosition();
-  var token = api_key;
-  final dateTime = DateTime.now();
-   final result = await post('http://sbuy.uz/api/load/get_location', 
-   body: json.encode({
-     'loadid': loadid,
-     'lat': '${position.latitude}',
-     'lon': '${position.longitude}',
-     'time': '${dateTime.toLocal()}',
-     }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $api_key',
-    });    
+    var token = api_key;
+    final dateTime = DateTime.now();
+    final result = await post(Uri.parse('http://sbuy.uz/api/load/get_location'),
+        body: json.encode({
+          'loadid': loadid,
+          'lat': '${lat}',
+          'lon': '${lon}',
+          'time': '${dateTime.toLocal()}',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $api_key',
+        });
     //         if(result.statusCode==404){
     //     Alert(
     //   context: context,
@@ -151,69 +103,57 @@ void initState() {
     //   )
     // ).show();
     // }
-     print(result.body);
-    if(json.decode(result.body)['error']=='Unauthenticated.'){
+    if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
-     await Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-   
+      await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
-    
-     
-     }
+  }
 
   Widget build(context) {
     return MaterialApp(
-      
       title: 'Flutter Demo',
       home: MainScreen(),
-           
     );
   }
 
+  checkpermission() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
 
-  // ---------------DON'T TOUCH THERE ------------------
-  //     ///For location
-     Future<Position> _determinePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
 
-  // Test if location services are enabled.
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    // Location services are not enabled don't continue
-    // accessing the position and request users of the 
-    // App to enable the location services.
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately. 
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
-    } 
-
-    if (permission == LocationPermission.denied) {
-      // Permissions are denied, next time you could try
-      // requesting permissions again (this is also where
-      // Android's shouldShowRequestPermissionRationale 
-      // returned true. According to Android guidelines
-      // your App should show an explanatory UI now.
-      return Future.error(
-          'Location permissions are denied');
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
     }
   }
 
-  // When we reach here, permissions are granted and we can
-  // continue accessing the position of the device.
-  //return await Geolocator.getCurrentPosition();
+  getLoc() async {
+    await Hive.initFlutter();
 
-  Position position = await Geolocator.getCurrentPosition(
-    desiredAccuracy: LocationAccuracy.high,
-    );
-   
-   return position;
-}
+    var box = await Hive.openBox('UserInfo');
+    api_key = box.get('key');
+    isActive = box.get('isActive');
+    loadid = box.get('idload');
+
+    await checkpermission();
+    location.changeSettings(interval: 15000, distanceFilter: 0);
+    _currentPosition = await location.getLocation();
+    location.enableBackgroundMode(enable: true);
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      sendRequest(
+          context, loadid, currentLocation.latitude, currentLocation.longitude);
+      print('${currentLocation.latitude} : ${currentLocation.longitude}');
+    });
+  }
 }
