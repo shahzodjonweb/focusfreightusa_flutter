@@ -81,6 +81,7 @@ class LoadInfoState extends State<LoadInfo> {
     //   )
     // ).show();
     // }
+    print(json.decode(result.body)['error']);
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
       await Navigator.push(
@@ -137,7 +138,7 @@ class LoadInfoState extends State<LoadInfo> {
   Widget confirmation(id, status, context) {
     if (status == 'inactive') {
       return Container(
-          color: Color(0xFF5B7290),
+          color: Color(0xFF2C5E1A),
           margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0),
           padding: EdgeInsets.all(10.0),
           width: double.infinity,
@@ -150,7 +151,7 @@ class LoadInfoState extends State<LoadInfo> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.green, // background
+                          primary: Color(0xFF32CD30), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         child: Text('Confirm'),
@@ -210,7 +211,7 @@ class LoadInfoState extends State<LoadInfo> {
     return Container(
         width: double.infinity,
         margin: EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
-        color: Color(0xFFE7EBF0),
+        color: Color(0xFF2C5E1A),
         child: Row(children: [
           Flexible(
               flex: 3,
@@ -223,6 +224,7 @@ class LoadInfoState extends State<LoadInfo> {
                       Text(
                         'Price: \$${load.price}',
                         style: TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
                         ),
@@ -231,7 +233,7 @@ class LoadInfoState extends State<LoadInfo> {
                       Text(
                         'Milage: ${load.milage}',
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -250,13 +252,14 @@ class LoadInfoState extends State<LoadInfo> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
+                          color: Colors.white,
                         ),
                       ),
                       Container(margin: EdgeInsets.only(top: 10.0)),
                       Text(
                         'Deadhead: ${load.deadhead}',
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -270,7 +273,7 @@ class LoadInfoState extends State<LoadInfo> {
     return Container(
         width: double.infinity,
         margin: EdgeInsets.all(15.0),
-        color: Color(0xFFE7EBF0),
+        color: Color(0xFF2C5E1A),
         child: Column(
           children: [
             Row(
@@ -290,7 +293,7 @@ class LoadInfoState extends State<LoadInfo> {
                       child: Text(
                         time,
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -307,12 +310,14 @@ class LoadInfoState extends State<LoadInfo> {
                     street,
                     style: TextStyle(
                       fontSize: 17.0,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
                     city,
                     style: TextStyle(
                       fontSize: 15.0,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -451,6 +456,7 @@ class LoadInfoState extends State<LoadInfo> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18.0,
+          color: Colors.white,
         ),
       );
     }
@@ -460,6 +466,7 @@ class LoadInfoState extends State<LoadInfo> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18.0,
+          color: Colors.white,
         ),
       );
     }
@@ -468,6 +475,7 @@ class LoadInfoState extends State<LoadInfo> {
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18.0,
+        color: Colors.white,
       ),
     );
   }

@@ -72,7 +72,7 @@ class LoadListState extends State<LoadList> {
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.all(7.0),
-        color: Color(0xFFE7EBF0),
+        color: Color(0xFFffffff),
         child: Column(
           children: [
             checkStatus(status),

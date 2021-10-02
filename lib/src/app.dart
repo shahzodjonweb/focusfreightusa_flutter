@@ -79,6 +79,7 @@ class _AppState extends State<App> {
     }
 
     var token = api_key;
+
     final dateTime = DateTime.now();
     final result = await post(Uri.parse('http://sbuy.uz/api/load/get_location'),
         body: json.encode({
@@ -103,9 +104,10 @@ class _AppState extends State<App> {
     //   )
     // ).show();
     // }
+    print(json.decode(result.body)['error']);
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
-      Navigator.pop(context);
-      await Navigator.push(
+      //  Navigator.pop(context);
+      Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }

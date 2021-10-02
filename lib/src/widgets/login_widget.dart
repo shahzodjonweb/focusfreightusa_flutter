@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../screens/main_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen2 extends StatefulWidget {
   createState() {
@@ -22,23 +23,66 @@ class LoginScreen2State extends State<LoginScreen2> {
   String password = '';
 
   Widget build(context) {
-    return Container(
-      margin: EdgeInsets.all(20.0),
-      child: Form(
-        key: formKey,
-        child: Column(
+    return Stack(children: [
+      Container(
+        margin: EdgeInsets.only(top: (MediaQuery.of(context).size.width / 3)),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            emailField(),
-            passwordField(),
-            Container(margin: EdgeInsets.only(top: 25.0)),
-            submitButton(),
-            bottomText(),
+            Text('Focus Freight Mobile',
+                style: GoogleFonts.nunitoSans(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.italic,
+                ))
           ],
         ),
       ),
-    );
+      Container(
+        padding: EdgeInsets.fromLTRB(20, 80, 20, 20),
+        margin:
+            EdgeInsets.only(top: (2 * MediaQuery.of(context).size.width / 3)),
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFFFF),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(50.0),
+            topLeft: Radius.circular(50.0),
+          ),
+        ),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              emailField(),
+              passwordField(),
+              Container(margin: EdgeInsets.only(top: 25.0)),
+              submitButton(),
+              bottomText(),
+            ],
+          ),
+        ),
+      ),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          margin: EdgeInsets.only(top: (MediaQuery.of(context).size.width / 2)),
+          child: Image.asset('assets/icon/icon.png', width: 100, height: 100),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFFFFF),
+            borderRadius: BorderRadius.all(
+              Radius.circular(100.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.green[500], spreadRadius: 1, blurRadius: 2),
+            ],
+          ),
+        )
+      ])
+    ]);
   }
 
   void downloadData(var email, var password) async {
@@ -151,6 +195,9 @@ class LoginScreen2State extends State<LoginScreen2> {
 
   Widget submitButton() {
     return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.green[700]),
+      ),
       onPressed: () {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();

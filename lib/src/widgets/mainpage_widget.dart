@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Active Load"),
-        backgroundColor: Color(0xFF003366),
+        backgroundColor: Color(0xFF1A4314),
         actions: [
           bols(),
           reports(),
@@ -146,7 +146,7 @@ class _MainPageState extends State<MainPage> {
           }
         },
       )),
-      backgroundColor: Color(0xFFB1BDCD),
+      backgroundColor: Colors.green[50],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (i) {
           Navigator.pop(context);
@@ -163,7 +163,7 @@ class _MainPageState extends State<MainPage> {
                 MaterialPageRoute(builder: (context) => MyAccountScreen()));
           }
         },
-        backgroundColor: Color(0xFF5B7290),
+        backgroundColor: Color(0xFF2C5E1A),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -179,7 +179,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
         currentIndex: 0,
-        selectedItemColor: Color(0xFF71C42B),
+        selectedItemColor: Color(0xFF32CD30),
         unselectedItemColor: Color(0xFFE7EBF0),
       ),
     );
@@ -207,9 +207,20 @@ class _MainPageState extends State<MainPage> {
   Widget mainInfo(status) {
     var statusof = showStatus(status);
     return Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF2C5E1A),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF2C5E1A),
+              spreadRadius: 1,
+            ),
+          ],
+        ),
         width: double.infinity,
         margin: EdgeInsets.all(15.0),
-        color: Color(0xFFE7EBF0),
         child: Row(children: [
           Flexible(
               flex: 3,
@@ -224,13 +235,14 @@ class _MainPageState extends State<MainPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
+                          color: Colors.white,
                         ),
                       ),
                       Container(margin: EdgeInsets.only(top: 10.0)),
                       Text(
                         'Milage: ${load.milage}',
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -249,13 +261,14 @@ class _MainPageState extends State<MainPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
+                          color: Colors.white,
                         ),
                       ),
                       Container(margin: EdgeInsets.only(top: 10.0)),
                       Text(
                         'Deadhead: ${load.deadhead}',
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -267,9 +280,20 @@ class _MainPageState extends State<MainPage> {
   Widget shipperInfo(var time, var city, var street, var checkin, var checkout,
       var last, var index, context, shipper, loadid) {
     return Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF2C5E1A),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[200],
+              blurRadius: 0.5,
+            ),
+          ],
+        ),
         width: double.infinity,
         margin: EdgeInsets.all(15.0),
-        color: Color(0xFFE7EBF0),
         child: Column(
           children: [
             Row(
@@ -289,7 +313,7 @@ class _MainPageState extends State<MainPage> {
                       child: Text(
                         time,
                         style: TextStyle(
-                          color: Color(0xFF71C42B),
+                          color: Colors.white,
                           fontSize: 16.0,
                         ),
                       ),
@@ -306,12 +330,14 @@ class _MainPageState extends State<MainPage> {
                     street,
                     style: TextStyle(
                       fontSize: 17.0,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
                     city,
                     style: TextStyle(
                       fontSize: 15.0,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -430,6 +456,7 @@ class _MainPageState extends State<MainPage> {
                 'Click to check in',
                 style: TextStyle(
                   fontSize: 17.0,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -457,6 +484,7 @@ class _MainPageState extends State<MainPage> {
                 check,
                 style: TextStyle(
                   fontSize: 17.0,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -486,6 +514,7 @@ class _MainPageState extends State<MainPage> {
                 'Click to check out',
                 style: TextStyle(
                   fontSize: 17.0,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -513,6 +542,7 @@ class _MainPageState extends State<MainPage> {
                 check,
                 style: TextStyle(
                   fontSize: 17.0,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -529,6 +559,7 @@ class _MainPageState extends State<MainPage> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18.0,
+          color: Colors.white,
         ),
       );
     }
@@ -538,6 +569,7 @@ class _MainPageState extends State<MainPage> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18.0,
+          color: Colors.white,
         ),
       );
     }
@@ -546,6 +578,7 @@ class _MainPageState extends State<MainPage> {
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18.0,
+        color: Colors.white,
       ),
     );
   }
@@ -555,7 +588,7 @@ class _MainPageState extends State<MainPage> {
       isNext = false;
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.green, // background
+          primary: Color(0xFF32CD30), // background
           onPrimary: Colors.white, // foreground
         ),
         child: Text('Checkin'),
@@ -571,6 +604,10 @@ class _MainPageState extends State<MainPage> {
       );
     }
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Color(0xFFB2D2A4), // background
+        onPrimary: Colors.white, // foreground
+      ),
       child: Text('Checkin'),
       onPressed: () {},
     );
@@ -581,7 +618,7 @@ class _MainPageState extends State<MainPage> {
       isNext = false;
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.green, // background
+          primary: Color(0xFF32CD30), // background
           onPrimary: Colors.white, // foreground
         ),
         child: Text('Checkout'),
@@ -597,6 +634,10 @@ class _MainPageState extends State<MainPage> {
       );
     }
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Color(0xFFB2D2A4), // background
+        onPrimary: Colors.white, // foreground
+      ),
       child: Text('Checkout'),
       onPressed: () {},
     );

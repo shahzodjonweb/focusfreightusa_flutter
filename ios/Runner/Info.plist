@@ -8,6 +8,17 @@
 	<string>Allow access to camera to capture photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow access to microphone</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow access to location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow access to location usage</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow access to location and location usage</string>
+
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

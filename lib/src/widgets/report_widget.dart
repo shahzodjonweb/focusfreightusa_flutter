@@ -26,10 +26,10 @@ class _ReportState extends State<Report> {
   var pressed = false;
   var key;
   var message;
-  Color _colorContainer1 = Color(0xFFE7EBF0);
-  Color _colorContainer2 = Color(0xFFE7EBF0);
-  Color _colorContainer3 = Color(0xFFE7EBF0);
-  Color _colorContainer4 = Color(0xFFE7EBF0);
+  Color _colorContainer1 = Color(0xFFffffff);
+  Color _colorContainer2 = Color(0xFFffffff);
+  Color _colorContainer3 = Color(0xFFffffff);
+  Color _colorContainer4 = Color(0xFFffffff);
   @override
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _ReportState extends State<Report> {
     return Form(
         key: formKey,
         child: Container(
-          color: Color(0xFFE7EBF0),
+          color: Color(0xFFffffff),
           margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +70,7 @@ class _ReportState extends State<Report> {
   Widget showTitle() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-      color: Color(0xFF5B7290),
+      color: Color(0xFF2C5E1A),
       //  padding:EdgeInsets.only(top:10.0,bottom:10.0),
       child: Row(
         children: [
@@ -106,17 +106,17 @@ class _ReportState extends State<Report> {
       child: new InkWell(
           onTap: () {
             // player.play('sound1.mp3');
-            _colorContainer1 = Color(0xFFE7EBF0);
-            _colorContainer2 = Color(0xFFE7EBF0);
-            _colorContainer3 = Color(0xFFE7EBF0);
-            _colorContainer4 = Color(0xFFE7EBF0);
+            _colorContainer1 = Color(0xFFffffff);
+            _colorContainer2 = Color(0xFFffffff);
+            _colorContainer3 = Color(0xFFffffff);
+            _colorContainer4 = Color(0xFFffffff);
             switch (number) {
               case 1:
                 _colorContainer1 = Color(0xFFcfd3d8);
                 message = name;
                 pressed = true;
                 if (pressedNumber == number) {
-                  _colorContainer1 = Color(0xFFE7EBF0);
+                  _colorContainer1 = Color(0xFFffffff);
                   pressedNumber = 0;
                   pressed = false;
                 } else {
@@ -129,7 +129,7 @@ class _ReportState extends State<Report> {
                 message = name;
                 pressed = true;
                 if (pressedNumber == number) {
-                  _colorContainer2 = Color(0xFFE7EBF0);
+                  _colorContainer2 = Color(0xFFffffff);
                   pressedNumber = 0;
                   pressed = false;
                 } else {
@@ -142,7 +142,7 @@ class _ReportState extends State<Report> {
                 message = name;
                 pressed = true;
                 if (pressedNumber == number) {
-                  _colorContainer3 = Color(0xFFE7EBF0);
+                  _colorContainer3 = Color(0xFFffffff);
                   pressedNumber = 0;
                   pressed = false;
                 } else {
@@ -155,7 +155,7 @@ class _ReportState extends State<Report> {
                 message = name;
                 pressed = true;
                 if (pressedNumber == number) {
-                  _colorContainer4 = Color(0xFFE7EBF0);
+                  _colorContainer4 = Color(0xFFffffff);
                   pressedNumber = 0;
                   pressed = false;
                 } else {
@@ -177,7 +177,7 @@ class _ReportState extends State<Report> {
                     flex: 1,
                     child: Container(
                       width: double.infinity,
-                      child: Icon(Icons.error, color: Color(0xFF003366)),
+                      child: Icon(Icons.error, color: Colors.red),
                     ),
                   ),
                   Flexible(
@@ -210,7 +210,7 @@ class _ReportState extends State<Report> {
                     flex: 1,
                     child: Container(
                       width: double.infinity,
-                      child: Icon(Icons.add_alert, color: Color(0xFF003366)),
+                      child: Icon(Icons.add_alert, color: Colors.red),
                     ),
                   ),
                   Flexible(
@@ -235,8 +235,18 @@ class _ReportState extends State<Report> {
                   message = value;
                 },
                 style: TextStyle(color: Color(0xFF003366)),
-                decoration:
-                    InputDecoration(fillColor: Colors.white, filled: true),
+                decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.green[300], width: 1),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey[300], width: 1),
+                    ),
+                    hintText:
+                        'If your problem not listed above, describe it here...'),
                 minLines:
                     6, // any number you need (It works as the rows for the textarea)
                 keyboardType: TextInputType.multiline,
@@ -264,7 +274,7 @@ class _ReportState extends State<Report> {
                   sendRequestStatus(widget.id);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // background
+                  primary: Colors.red[600], // background
                   onPrimary: Colors.white, // foreground
                 ),
                 child: Text('Send Report'))));
