@@ -29,6 +29,15 @@ class _MainPageState extends State<MainPage> {
   var idOfLoad;
   List<Shipper> shippers;
   bool isNext = true;
+  int refresher = 0;
+  void refreshData() {
+    refresher++;
+  }
+
+  Future onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
 
   Widget setScreen(context) {
     if (_hasActive) {
@@ -86,7 +95,7 @@ class _MainPageState extends State<MainPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => ReportScreen('$idOfLoad')),
-            );
+            ).then(onGoBack);
           },
           child: Icon(
             Icons.error,
@@ -106,7 +115,7 @@ class _MainPageState extends State<MainPage> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ImageScreen('$idOfLoad')),
-            );
+            ).then(onGoBack);
           },
           child: Icon(
             Icons.image,
@@ -151,16 +160,19 @@ class _MainPageState extends State<MainPage> {
         onTap: (i) {
           Navigator.pop(context);
           if (i == 0) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MainScreen()));
+            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()))
+                .then(onGoBack);
           }
           if (i == 1) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoadListScreen()));
+                    MaterialPageRoute(builder: (context) => LoadListScreen()))
+                .then(onGoBack);
           }
           if (i == 2) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyAccountScreen()));
+                    MaterialPageRoute(builder: (context) => MyAccountScreen()))
+                .then(onGoBack);
           }
         },
         backgroundColor: Color(0xFF2C5E1A),
@@ -221,60 +233,76 @@ class _MainPageState extends State<MainPage> {
         ),
         width: double.infinity,
         margin: EdgeInsets.all(15.0),
-        child: Row(children: [
-          Flexible(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Price: \$${load.price}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(margin: EdgeInsets.only(top: 10.0)),
-                      Text(
-                        'Milage: ${load.milage}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ))),
-          Flexible(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Status: $statusof',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(margin: EdgeInsets.only(top: 10.0)),
-                      Text(
-                        'Deadhead: ${load.deadhead}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ))),
-        ]));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+              child: Text(
+                'Load: ${load.number}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            Row(children: [
+              Flexible(
+                  flex: 3,
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Price: \$${load.price}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(margin: EdgeInsets.only(top: 10.0)),
+                          Text(
+                            'Milage: ${load.milage}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ))),
+              Flexible(
+                  flex: 3,
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Status: $statusof',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(margin: EdgeInsets.only(top: 10.0)),
+                          Text(
+                            'Deadhead: ${load.deadhead}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ))),
+            ])
+          ],
+        ));
   }
 
   Widget shipperInfo(var time, var city, var street, var checkin, var checkout,
@@ -417,7 +445,8 @@ class _MainPageState extends State<MainPage> {
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              context, MaterialPageRoute(builder: (context) => LoginScreen()))
+          .then(onGoBack);
     }
     if (json.decode(result.body)['error'] == 'Load not found') {
       _hasActive = false;
@@ -763,7 +792,8 @@ class _MainPageState extends State<MainPage> {
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              context, MaterialPageRoute(builder: (context) => LoginScreen()))
+          .then(onGoBack);
     }
     if (json.decode(result.body) != null) {
       if (shippers.last.order == shipper && shippers.last.checkin != null) {
@@ -773,7 +803,8 @@ class _MainPageState extends State<MainPage> {
         box.put('isActive', false);
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+                context, MaterialPageRoute(builder: (context) => MainScreen()))
+            .then(onGoBack);
       }
     }
   }
@@ -831,11 +862,13 @@ class _MainPageState extends State<MainPage> {
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              context, MaterialPageRoute(builder: (context) => LoginScreen()))
+          .then(onGoBack);
     }
     if (json.decode(result.body) != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoadListScreen()));
+      Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoadListScreen()))
+          .then(onGoBack);
     }
   }
 

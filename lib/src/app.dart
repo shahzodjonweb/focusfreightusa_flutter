@@ -18,6 +18,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
@@ -33,9 +34,14 @@ class _AppState extends State<App> {
   LocationData _currentPosition;
   Location location = Location();
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String _message = '';
+
   void getstatus() async {}
   @override
   void initState() {
+    //_registerOnFirebase();
+    getMessage();
     Timer timer = Timer.periodic(Duration(seconds: 60), (timer) {
       DateTime timenow = DateTime.now(); //get current date and time
       checkpermission();
@@ -45,6 +51,13 @@ class _AppState extends State<App> {
     // TODO: implement initState
     super.initState();
     getLoc();
+  }
+
+  void getMessage() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('received message');
+      setState(() => _message = message.notification.body);
+    });
   }
 
   void sendRequest(context, loadid, lat, lon) async {

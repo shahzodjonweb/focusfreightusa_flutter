@@ -8,6 +8,7 @@ import '../screens/main_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen2 extends StatefulWidget {
   createState() {
@@ -21,6 +22,28 @@ class LoginScreen2State extends State<LoginScreen2> {
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String device_token = '';
+  int refresher = 0;
+  void refreshData() {
+    refresher++;
+  }
+
+  Future onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  _registerOnFirebase() {
+    _firebaseMessaging.subscribeToTopic('all');
+    _firebaseMessaging.getToken().then((token) => {device_token = token});
+  }
+
+  @override
+  void initState() {
+    _registerOnFirebase();
+    super.initState();
+  }
 
   Widget build(context) {
     return Stack(children: [
@@ -117,7 +140,11 @@ class LoginScreen2State extends State<LoginScreen2> {
     }
     //String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zYnV5LnV6XC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjE1NTgxNjc5LCJuYmYiOjE2MTU1ODE2NzksImp0aSI6IjNFUWhHS1JsZEtzZXVSTDYiLCJzdWIiOjEwLCJwcnYiOiIzMDViYjc1MmEzZDUwYTUwNjY2ZjI5NzhkMjM4ZTBlYmNmZTU3Zjg3In0.W1g4469mlxlMubcVX9XcvZ5GtI-2vo6Wr0pCizjjJck';
     final result = await post(Uri.parse('http://sbuy.uz/api/auth/login'),
-        body: json.encode({'email': email, 'password': password}),
+        body: json.encode({
+          'email': email,
+          'password': password,
+          'device_token': device_token
+        }),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -151,7 +178,8 @@ class LoginScreen2State extends State<LoginScreen2> {
       setState(() {});
       Navigator.pop(context);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+              context, MaterialPageRoute(builder: (context) => MainScreen()))
+          .then(onGoBack);
     } else {
       message = 'Your email or password is wrong!';
       setState(() {});

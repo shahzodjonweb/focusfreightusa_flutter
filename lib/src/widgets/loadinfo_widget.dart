@@ -26,8 +26,15 @@ class LoadInfoState extends State<LoadInfo> {
   var api_key;
   Load load;
   List<Shipper> shippers;
-  //  final id;
-  // LoadInfoState(this.id);
+  int refresher = 0;
+  void refreshData() {
+    refresher++;
+  }
+
+  Future onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
 
   Future<String> downloadData(context) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -212,60 +219,76 @@ class LoadInfoState extends State<LoadInfo> {
         width: double.infinity,
         margin: EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
         color: Color(0xFF2C5E1A),
-        child: Row(children: [
-          Flexible(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Price: \$${load.price}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      Container(margin: EdgeInsets.only(top: 10.0)),
-                      Text(
-                        'Milage: ${load.milage}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ))),
-          Flexible(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Status: $statusof',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(margin: EdgeInsets.only(top: 10.0)),
-                      Text(
-                        'Deadhead: ${load.deadhead}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ))),
-        ]));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+              child: Text(
+                'Load: ${load.number}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            Row(children: [
+              Flexible(
+                  flex: 3,
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Price: \$${load.price}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          Container(margin: EdgeInsets.only(top: 10.0)),
+                          Text(
+                            'Milage: ${load.milage}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ))),
+              Flexible(
+                  flex: 3,
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Status: $statusof',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(margin: EdgeInsets.only(top: 10.0)),
+                          Text(
+                            'Deadhead: ${load.deadhead}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ))),
+            ])
+          ],
+        ));
   }
 
   Widget shipperInfo(var time, var city, var street, var checkin, var checkout,
@@ -498,10 +521,12 @@ class LoadInfoState extends State<LoadInfo> {
     if (json.decode(result.body) != null) {
       if (status == "active") {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+                context, MaterialPageRoute(builder: (context) => MainScreen()))
+            .then(onGoBack);
       } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoadListScreen()));
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoadListScreen()))
+            .then(onGoBack);
       }
     }
   }

@@ -18,6 +18,15 @@ class LoadListState extends State<LoadList> {
   int currentPage = 1;
   int lastPage = 7;
   List<Load> loads = [];
+  int refresher = 0;
+  void refreshData() {
+    refresher++;
+  }
+
+  Future onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
 
   ScrollController _scrollController = ScrollController();
   @override
@@ -45,6 +54,7 @@ class LoadListState extends State<LoadList> {
         shrinkWrap: false,
         itemBuilder: (context, int index) {
           return listItem(
+              loads[index].number,
               loads[index].status,
               loads[index].shippers[0].city,
               loads[index].shippers[0].time,
@@ -57,8 +67,8 @@ class LoadListState extends State<LoadList> {
     );
   }
 
-  Widget listItem(var status, var pickup, var pickuptime, var delivery,
-      var deliverytime, id, context) {
+  Widget listItem(var number, var status, var pickup, var pickuptime,
+      var delivery, var deliverytime, id, context) {
     if (status == 'canceled') {
       return Text('');
     }
@@ -67,7 +77,7 @@ class LoadListState extends State<LoadList> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => LoadInfoScreen('$id')),
-        );
+        ).then(onGoBack);
       },
       child: Container(
         width: double.infinity,
@@ -75,7 +85,7 @@ class LoadListState extends State<LoadList> {
         color: Color(0xFFffffff),
         child: Column(
           children: [
-            checkStatus(status),
+            checkStatus(number, status),
             Container(
               padding: EdgeInsets.all(10.0),
               width: double.infinity,
@@ -208,7 +218,8 @@ class LoadListState extends State<LoadList> {
     if (json.decode(result.body)['error'] == 'Unauthenticated.') {
       Navigator.pop(context);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              context, MaterialPageRoute(builder: (context) => LoginScreen()))
+          .then(onGoBack);
     }
 
     var jsonloads = json.decode(result.body)['data'];
@@ -222,47 +233,89 @@ class LoadListState extends State<LoadList> {
     setState(() {}); // return your response
   }
 
-  Widget checkStatus(var status) {
+  Widget checkStatus(var number, var status) {
     if (status == 'finished' || status == 'invoiced') {
       return Container(
-        width: double.infinity,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
-        color: Color(0xFF5B7290),
-        child: Text('Finished',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.white,
-            )),
+        color: Color(0xFF2C5E1A),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text("Load: $number",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  )),
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text('Finished',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  )),
+            ),
+          ],
+        ),
       );
     }
     if (status == 'active') {
       return Container(
-        width: double.infinity,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
-        color: Color(0xFF71C42B),
-        child: Text('Active',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.white,
-            )),
+        color: Color(0xFF32CD30),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text("Load: $number",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  )),
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text('Active',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  )),
+            ),
+          ],
+        ),
       );
     }
     if (status == 'inactive') {
       return Container(
-        width: double.infinity,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
-        color: Color(0xFFfffb00),
-        child: Text('New Load',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.red,
-            )),
+        color: Color(0xFFDED93E),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text("Load: $number",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  )),
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 5),
+              child: Text('New Load',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  )),
+            ),
+          ],
+        ),
       );
     }
 
